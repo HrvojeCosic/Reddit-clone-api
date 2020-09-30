@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const bodyParser = require('body-parser');
+const app = express();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+router.post('/', (req, res, next) => {
+	console.log(req.body.username);
 });
 
 module.exports = router;
