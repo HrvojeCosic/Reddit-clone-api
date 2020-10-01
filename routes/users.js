@@ -6,8 +6,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-router.post('/', (req, res, next) => {
-	console.log(req.body.username);
-});
+const userController = require('../controllers/userController');
+
+router.post('/', userController.createNewUser);
 
 module.exports = router;
