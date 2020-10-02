@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const userController = require('../controllers/userController');
 
 router.post('/', userController.createNewUser);
-
 router.post('/login', userController.login);
+router.get('/login', userController.getLoggedInUser);
 
 module.exports = router;

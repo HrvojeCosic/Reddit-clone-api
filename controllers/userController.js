@@ -63,3 +63,16 @@ exports.login = function (req, res, next) {
 		res.status(200).json({ title: 'login successful.', token });
 	});
 };
+
+exports.getLoggedInUser = function (req, res, next) {
+	jwt.verify(req.headers.token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+		if (err) return console.log(err);
+		//IF JWT VALID
+		return res.status(200).json({
+			user: {
+				username: decoded.user[0].username,
+				email: decoded.user[0].email,
+			},
+		});
+	});
+};
