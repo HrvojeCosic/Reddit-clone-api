@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.createNewUser = function (req, res, next) {
 	const { username, password, repeatPassword, email, createdAt } = req.body;
@@ -17,13 +18,11 @@ exports.createNewUser = function (req, res, next) {
 			//EMAIL ERROR
 			if (err) {
 				console.log(err);
-				return res
-					.status(400)
-					.json({
-						title: 'error',
-						error:
-							'Registration failed. Check username and email fields and try again',
-					});
+				return res.status(400).json({
+					title: 'error',
+					error:
+						'Registration failed. Check username and email fields and try again',
+				});
 			}
 			res.status(200).json({ title: 'Signed up successfully.' });
 		});
@@ -57,7 +56,10 @@ exports.login = function (req, res, next) {
 				.json({ title: 'login failed.', error: 'inccorect password' });
 			return;
 		}
-		res.status(200).json({ title: 'login successful.' });
 		//ALL IS GOOD
+		const token = jwt.sign({ user: user }, process.env.JWT_SECRET_KEY, {
+			expiresIn: '7 days',
+		});
+		res.status(200).json({ title: 'login successful.', token });
 	});
 };
