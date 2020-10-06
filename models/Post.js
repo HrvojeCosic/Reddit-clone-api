@@ -7,6 +7,7 @@ const postSchema = new Schema({
 	timestamp: { type: String, required: true },
 	title: { type: String, required: true },
 	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+	upvotes: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('Post', postSchema);

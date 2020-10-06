@@ -13,7 +13,7 @@ exports.getAllPosts = async function (req, res, next) {
 };
 
 exports.createNewPost = async function (req, res, next) {
-	const { community, title, text, timestamp, author } = req.body;
+	const { community, title, text, timestamp, author, upvotes } = req.body;
 	let user_id = '';
 
 	//FIND AUTHOR OF THE POST IN DB
@@ -34,6 +34,7 @@ exports.createNewPost = async function (req, res, next) {
 		timestamp,
 		title,
 		text,
+		upvotes,
 		// comments: '', >>>>not created yet
 	});
 	newPost.save().then(post => {
