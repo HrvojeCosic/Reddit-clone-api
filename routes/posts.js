@@ -13,8 +13,6 @@ const postController = require('../controllers/postController');
 router.post('/', postController.createNewPost);
 
 //GET ALL POSTS
-router.get('/', (req, res, next) => {
-	res.json({ msg: 'hello there' });
-});
+router.get('/', postController.getAllPosts);
 
 module.exports = router;
