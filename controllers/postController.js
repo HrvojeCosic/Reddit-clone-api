@@ -46,6 +46,8 @@ exports.createNewPost = async function (req, res, next) {
 				res
 					.status(200)
 					.json({ populatedAuthor, title: 'Post created successfully' });
+			}).catch(err => {
+				console.log(err);
 			});
 	});
 };

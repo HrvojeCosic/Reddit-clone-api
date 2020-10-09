@@ -6,6 +6,7 @@ const postSchema = new Schema({
 	author: [{ type: Schema.Types.ObjectId, ref: 'User', required: true }],
 	timestamp: { type: String, required: true },
 	title: { type: String, required: true },
+	text: { type: String, default: '' },
 	comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 	upvotes: { type: Number, default: 0 },
 });

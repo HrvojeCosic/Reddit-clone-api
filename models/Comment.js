@@ -6,7 +6,8 @@ const commentSchema = new Schema({
 	content: { type: String, required: true },
 	timestamp: { type: String, required: true },
 	post: { type: Schema.Types.ObjectId, ref: 'Post' },
-	edited: Boolean,
+	edited: { type: Boolean, default: false },
+	upvotes: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('Comment', commentSchema);
