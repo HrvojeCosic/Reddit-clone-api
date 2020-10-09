@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const app = express();
-const Post = require('../models/Post');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,5 +16,8 @@ router.get('/', postController.getAllPosts);
 
 //COMMENT ON A POST
 router.post('/post/:id', postController.createNewComment);
+
+//GET ALL COMMENTS OF THE CLICKED-ON POST
+router.get('/:id', postController.getComments);
 
 module.exports = router;

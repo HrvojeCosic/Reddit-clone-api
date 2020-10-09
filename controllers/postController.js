@@ -88,3 +88,13 @@ exports.createNewComment = function (req, res, next) {
 	});
 	res.status(200);
 };
+
+exports.getComments = function (req, res, next) {
+	Comment.find({ post: req.params.id }, (err, comments) => {
+		if (err) {
+			console.log(err);
+			res.status(500).json({ title: 'error', error: "Couldn't load posts..." });
+		}
+		res.status(200).json({ comments });
+	});
+};
