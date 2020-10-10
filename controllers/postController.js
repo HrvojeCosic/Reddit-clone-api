@@ -36,7 +36,7 @@ exports.createNewPost = async function (req, res, next) {
 		title,
 		text,
 		upvotes,
-		// comments: '', >>>>not created yet
+		comments: [],
 	});
 	newPost.save().then(post => {
 		//POPULATE AUTHOR PROPERTY WITH THE AUTHOR'S USERNAME AND SEND IT TO FRONTEND
@@ -77,16 +77,24 @@ exports.createNewComment = function (req, res, next) {
 		newComment
 			.save()
 			.then(comment => {
+				//PUSH COMMENT TO User COLLECTION COMMENT ARRAY PROPERTY
+				Post.updateOne(
+					{ _id: postId },
+					{ $push: { comments: comment } },
+					(err, result) => {
+						if (err) console.log(err);
+						return result;
+					}
+				);
 				res.status(200).json({ comment });
 			})
 			.catch(err => {
 				res
 					.status(500)
-					.json({ title: error, error: 'User not saved to the DB' });
+					.json({ title: 'error', error: 'User not saved to the DB' });
 				console.log(err);
 			});
 	});
-	res.status(200);
 };
 
 exports.getComments = function (req, res, next) {
