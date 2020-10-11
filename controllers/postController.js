@@ -77,7 +77,7 @@ exports.createNewComment = function (req, res, next) {
 		newComment
 			.save()
 			.then(comment => {
-				//PUSH COMMENT TO User COLLECTION COMMENT ARRAY PROPERTY
+				//PUSH COMMENT TO Post COLLECTION COMMENT ARRAY PROPERTY
 				Post.updateOne(
 					{ _id: postId },
 					{ $push: { comments: comment } },
@@ -97,6 +97,7 @@ exports.createNewComment = function (req, res, next) {
 	});
 };
 
+//GET ONE POST'S COMMENTS
 exports.getComments = function (req, res, next) {
 	Comment.find({ post: req.params.id }, (err, comments) => {
 		if (err) {
@@ -105,4 +106,17 @@ exports.getComments = function (req, res, next) {
 		}
 		res.status(200).json({ comments });
 	});
+};
+
+//SEARCH FOR A CERTAIN POST'S TITLE
+exports.getPost = function (req, res, next) {
+	const searchTitle = req.params.value;
+	Post.find({ title: { $regex: `.*${searchTitle}.*` } }, err => {
+		if (err) return;
+	})
+		//IF THERE IS NO ERROR, POPULATE THE AUTHOR WITH THEIR USERNAME AND SEND TO FRONTEND
+		.populate('author', 'username')
+		.then(postsFound => {
+			res.status(200).json({ msg: 'Post search finished.', postsFound });
+		});
 };

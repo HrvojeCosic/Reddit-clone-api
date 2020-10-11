@@ -20,4 +20,7 @@ router.post('/post/:id', postController.createNewComment);
 //GET ALL COMMENTS OF THE CLICKED-ON POST
 router.get('/:id', postController.getComments);
 
+//SEARCH FOR A POST
+router.get('/searchPost/:value', postController.getPost);
+
 module.exports = router;
