@@ -1,6 +1,8 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const { post } = require('../routes/posts');
+const { deleteOne } = require('../models/Post');
 
 //GET ALL POSTS
 exports.getAllPosts = async function (req, res, next) {
@@ -119,4 +121,25 @@ exports.getPost = function (req, res, next) {
 		.then(postsFound => {
 			res.status(200).json({ msg: 'Post search finished.', postsFound });
 		});
+};
+
+//UPVOTE/DOWNVOTE A POST
+exports.votePost = function (req, res, next) {
+	const { post, action } = req.body;
+
+	if (action === 'addVote') {
+		Post.findOneAndUpdate({ _id: post }, { $inc: { upvotes: 1 } }, err => {
+			if (err) {
+				res.status(500).json({ title: 'error', err });
+			}
+			res.status(200).json({ title: 'Incremented post upvotes by 1' });
+		});
+	} else if (action === 'subtractVote') {
+		Post.findOneAndUpdate({ _id: post }, { $inc: { upvotes: -1 } }, err => {
+			if (err) {
+				res.status(500).json({ title: 'error', err });
+			}
+			res.status(200).json({ title: 'Decremented post upvotes by 1' });
+		});
+	}
 };

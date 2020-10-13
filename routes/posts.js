@@ -23,4 +23,7 @@ router.get('/:id', postController.getComments);
 //SEARCH FOR A POST
 router.get('/searchPost/:value', postController.getPost);
 
+//UPVOTE/DOWNVOTE A POST
+router.put('/votePost', postController.votePost);
+
 module.exports = router;
