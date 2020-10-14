@@ -5,8 +5,8 @@ const { post } = require('../routes/posts');
 const { deleteOne } = require('../models/Post');
 
 //GET ALL POSTS
-exports.getAllPosts = async function (req, res, next) {
-	const allPosts = await Post.find({}, (err, posts) => {
+exports.getAllPosts = function (req, res, next) {
+	Post.find({}, (err, posts) => {
 		if (err) {
 			return console.log(err);
 		}
@@ -99,19 +99,22 @@ exports.createNewComment = function (req, res, next) {
 	});
 };
 
-//GET ONE POST'S COMMENTS
-exports.getComments = function (req, res, next) {
-	Comment.find({ post: req.params.id }, (err, comments) => {
+//GET ONE POST
+exports.getPost = function (req, res, next) {
+	Post.findOne({ _id: req.params.id }, (err, post) => {
 		if (err) {
 			console.log(err);
 			res.status(500).json({ title: 'error', error: "Couldn't load posts..." });
 		}
-		res.status(200).json({ comments });
-	});
+		res.status(200).json({ post });
+	})
+		.populate('comments')
+		.populate('author', 'username')
+		.exec();
 };
 
 //SEARCH FOR A CERTAIN POST'S TITLE
-exports.getPost = function (req, res, next) {
+exports.getPostTitle = function (req, res, next) {
 	const searchTitle = req.params.value;
 	Post.find({ title: { $regex: `.*${searchTitle}.*` } }, err => {
 		if (err) return;

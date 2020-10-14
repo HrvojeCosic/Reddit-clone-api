@@ -14,14 +14,14 @@ router.post('/', postController.createNewPost);
 //GET ALL POSTS
 router.get('/', postController.getAllPosts);
 
+//GET ONE POST
+router.get('/post/:id', postController.getPost);
+
 //COMMENT ON A POST
 router.post('/post/:id', postController.createNewComment);
 
-//GET ALL COMMENTS OF THE CLICKED-ON POST
-router.get('/:id', postController.getComments);
-
 //SEARCH FOR A POST
-router.get('/searchPost/:value', postController.getPost);
+router.get('/searchPost/:value', postController.getPostTitle);
 
 //UPVOTE/DOWNVOTE A POST
 router.put('/votePost', postController.votePost);
