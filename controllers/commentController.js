@@ -16,5 +16,20 @@ exports.voteComment = function (req, res) {
 			.catch(err => {
 				res.status(500).json({ title: 'error', error: err });
 			});
+	} else if (req.body.action === 'downvote') {
+		const comment_id = req.params.id;
+		Comment.findOneAndUpdate(
+			{ _id: comment_id },
+			{ $inc: { upvotes: -1 } },
+			{ returnOriginal: false }
+		)
+			.then(updatedComment => {
+				res
+					.status(200)
+					.json({ title: 'Post succesffully downvoted', updatedComment });
+			})
+			.catch(err => {
+				res.status(500).json({ title: 'error', error: err });
+			});
 	}
 };
