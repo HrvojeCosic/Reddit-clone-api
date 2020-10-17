@@ -12,6 +12,7 @@ exports.createNewUser = function (req, res, next) {
 			password: bcrypt.hashSync(password, 10),
 			email: email,
 			timestamp: createdAt,
+			posts: [],
 		});
 		//STORING USER IN DB
 		newUser.save(err => {
@@ -72,7 +73,14 @@ exports.getLoggedInUser = function (req, res, next) {
 			user: {
 				username: decoded.user[0].username,
 				email: decoded.user[0].email,
+				id: decoded.user[0]._id,
 			},
 		});
+	});
+};
+
+exports.getUser = function (req, res, next) {
+	User.findById(req.params.id, (err, user) => {
+		res.status(200).json({ user });
 	});
 };

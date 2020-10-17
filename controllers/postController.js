@@ -46,6 +46,14 @@ exports.createNewPost = async function (req, res, next) {
 			.populate('author', 'username')
 			.execPopulate()
 			.then(populatedAuthor => {
+				console.log(populatedAuthor);
+				//PUSH THE POPULATED POST TO USER'S POSTS[]
+				User.findOneAndUpdate(
+					{ _id: queryAuthor._id },
+					{ $push: { posts: populatedAuthor } },
+					(err, author) => {}
+				);
+				//populatedAuthor. Push this to User.posts[]
 				res
 					.status(200)
 					.json({ populatedAuthor, title: 'Post created successfully' });
