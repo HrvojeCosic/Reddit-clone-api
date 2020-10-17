@@ -81,6 +81,13 @@ exports.getLoggedInUser = function (req, res, next) {
 
 exports.getUser = function (req, res, next) {
 	User.findById(req.params.id, (err, user) => {
-		res.status(200).json({ user });
-	});
+		if (err) {
+			res.status(404).json({ title: 'error', error: 'User not found' });
+		}
+		res.status(200).json({
+			userUsername: user.username,
+			userTimestamp: user.timestamp,
+			posts: user.posts,
+		});
+	}).populate('posts');
 };
