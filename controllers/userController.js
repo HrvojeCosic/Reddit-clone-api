@@ -89,5 +89,8 @@ exports.getUser = function (req, res, next) {
 			userTimestamp: user.timestamp,
 			posts: user.posts,
 		});
-	}).populate('posts');
+	}).populate({
+		path: 'posts',
+		populate: { path: 'author', select: 'username' },
+	});
 };
