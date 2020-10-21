@@ -18,11 +18,10 @@ exports.createNewUser = function (req, res, next) {
 		newUser.save(err => {
 			//EMAIL ERROR
 			if (err) {
-				console.log(err);
 				return res.status(400).json({
 					title: 'error',
 					error:
-						'Registration failed. Check username and email fields and try again',
+						'Make sure your username is 4-20 characters long and email is valid.',
 				});
 			}
 			res.status(200).json({ title: 'Signed up successfully.' });
