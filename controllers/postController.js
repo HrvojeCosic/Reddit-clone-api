@@ -1,6 +1,7 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const Subreddit = require('../models/Subreddit');
 const { post } = require('../routes/posts');
 const { deleteOne } = require('../models/Post');
 
@@ -52,7 +53,12 @@ exports.createNewPost = async function (req, res, next) {
 					{ $push: { posts: populatedAuthor } },
 					(err, author) => {}
 				);
-				//populatedAuthor. Push this to User.posts[]
+				//PUSH THE POPULATED POST TO SUBREDDIT'S POSTS[]
+				Subreddit.findOneAndUpdate(
+					{ name: populatedAuthor.subreddit },
+					{ $push: { posts: populatedAuthor } },
+					(err, subreddit) => {}
+				);
 				res
 					.status(200)
 					.json({ populatedAuthor, title: 'Post created successfully' });
