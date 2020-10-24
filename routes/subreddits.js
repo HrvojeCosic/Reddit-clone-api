@@ -6,8 +6,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const commentController = require('../controllers/commentController');
+const subredditController = require('../controllers/subredditController');
 
-router.put('/comment/vote/:id', commentController.voteComment);
+router.post('/new-subreddit', subredditController.createSubreddit);
 
 module.exports = router;
