@@ -20,3 +20,13 @@ exports.createSubreddit = function (req, res, next) {
 			});
 		});
 };
+
+exports.getAllSubreddits = function (req, res, next) {
+	communityName = [];
+	Subreddit.find({}).then(communities => {
+		communities.forEach(community => {
+			communityName.push(community.name);
+		});
+		res.status(200).json(communityName);
+	});
+};

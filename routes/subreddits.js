@@ -9,5 +9,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const subredditController = require('../controllers/subredditController');
 
 router.post('/new-subreddit', subredditController.createSubreddit);
+router.get('/', subredditController.getAllSubreddits);
 
 module.exports = router;
