@@ -10,5 +10,6 @@ const subredditController = require('../controllers/subredditController');
 
 router.post('/new-subreddit', subredditController.createSubreddit);
 router.get('/', subredditController.getAllSubreddits);
+router.get('/subreddit/:subreddit', subredditController.getSubreddit);
 
 module.exports = router;

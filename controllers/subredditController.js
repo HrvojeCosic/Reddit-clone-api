@@ -30,3 +30,17 @@ exports.getAllSubreddits = function (req, res, next) {
 		res.status(200).json(communityName);
 	});
 };
+
+exports.getSubreddit = function (req, res, next) {
+	Subreddit.findOne({ name: req.params.subreddit }, (err, subInfo) => {
+		if (err) {
+			res
+				.status(500)
+				.json({ title: 'error', error: 'Failed to find subreddit.' });
+		}
+		res.status(200).json(subInfo);
+	}).populate({
+		path: 'posts',
+		populate: { path: 'author', select: 'username' },
+	});
+};
