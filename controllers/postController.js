@@ -72,46 +72,6 @@ exports.createNewPost = async function (req, res, next) {
 	});
 };
 
-//CREATE COMMENT
-exports.createNewComment = function (req, res, next) {
-	const postId = req.params.id;
-	const { author, timestamp, comment } = req.body;
-
-	//FIND COMMENT'S AUTHOR BY EMAIL
-	User.findOne({ email: author }, (err, author) => {
-		if (err) {
-			console.log(err);
-		}
-		//CREATE NEW COMMENT (USING FOUND AUTHOR)
-		newComment = new Comment({
-			author: author.username,
-			content: comment,
-			timestamp,
-			post: postId,
-		});
-		newComment
-			.save()
-			.then(comment => {
-				//PUSH COMMENT TO Post COLLECTION COMMENT ARRAY PROPERTY
-				Post.updateOne(
-					{ _id: postId },
-					{ $push: { comments: comment } },
-					(err, result) => {
-						if (err) console.log(err);
-						return result;
-					}
-				);
-				res.status(200).json({ comment });
-			})
-			.catch(err => {
-				res
-					.status(500)
-					.json({ title: 'error', error: 'User not saved to the DB' });
-				console.log(err);
-			});
-	});
-};
-
 //GET ONE POST
 exports.getPost = function (req, res, next) {
 	Post.findOne({ _id: req.params.id }, (err, post) => {
