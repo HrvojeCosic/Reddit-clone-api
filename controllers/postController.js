@@ -1,9 +1,6 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
-const Comment = require('../models/Comment');
 const Subreddit = require('../models/Subreddit');
-const { post } = require('../routes/posts');
-const { deleteOne } = require('../models/Post');
 
 //GET ALL POSTS
 exports.getAllPosts = function (req, res, next) {
@@ -81,7 +78,10 @@ exports.getPost = function (req, res, next) {
 		}
 		res.status(200).json({ post });
 	})
-		.populate('comments')
+		.populate({
+			path: 'comments',
+			populate: { path: 'author', select: '_id', select: 'username' },
+		})
 		.populate('author', 'username')
 		.exec();
 };

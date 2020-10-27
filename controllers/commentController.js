@@ -6,14 +6,12 @@ exports.createNewComment = function (req, res, next) {
 	const postId = req.params.id;
 	const { author, timestamp, comment } = req.body;
 
-	//FIND COMMENT'S AUTHOR BY EMAIL
 	User.findOne({ email: author }, (err, author) => {
 		if (err) {
 			console.log(err);
 		}
-		//CREATE NEW COMMENT (USING FOUND AUTHOR)
 		newComment = new Comment({
-			author: author.username,
+			author: author._id,
 			content: comment,
 			timestamp,
 			post: postId,
@@ -21,16 +19,18 @@ exports.createNewComment = function (req, res, next) {
 		newComment
 			.save()
 			.then(comment => {
-				//PUSH COMMENT TO Post COLLECTION COMMENT ARRAY PROPERTY
-				Post.updateOne(
-					{ _id: postId },
-					{ $push: { comments: comment } },
-					(err, result) => {
-						if (err) console.log(err);
-						return result;
-					}
-				);
-				res.status(200).json({ comment });
+				comment.populate('author', 'username', () => {
+					//PUSH COMMENT TO Post COLLECTION COMMENT PROPERTY ARRAY
+					Post.updateOne(
+						{ _id: postId },
+						{ $push: { comments: comment } },
+						(err, result) => {
+							if (err) console.log(err);
+							return result;
+						}
+					);
+					res.status(200).json({ comment });
+				});
 			})
 			.catch(err => {
 				res
